@@ -1,0 +1,4 @@
+[submodule "submodules/LCTWorks-Toolkit"]
+	path = submodules/LCTWorks-Toolkit
+	url = https://github.com/LCTWorks/LCTWorks-Toolkit.git
+	branch = dependencies/webviewer
