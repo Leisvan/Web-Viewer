@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Web Viewer (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Web Viewer (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
