@@ -1,9 +1,9 @@
 {
   "profiles": {
-    "Web Viewer (Package)": {
+    "Truffle Pig (Package)": {
       "commandName": "MsixPackage"
     },
-    "Web Viewer (Unpackaged)": {
+    "Truffle Pig (Unpackaged)": {
       "commandName": "Project"
     }
   }
