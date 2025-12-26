@@ -1,7 +1,7 @@
-﻿using WebViewer.Helpers;
-using WebViewer.Models;
+﻿using TrufflePig.Helpers;
+using TrufflePig.Models;
 
-namespace WebViewer.Xaml;
+namespace TrufflePig.Xaml;
 
 public static class Adapters
 {

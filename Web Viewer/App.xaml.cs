@@ -9,11 +9,11 @@ using Microsoft.UI.Xaml;
 using System;
 using System.Security;
 using System.Threading.Tasks;
-using WebViewer.Services;
-using WebViewer.ViewModels;
-using WebViewer.Xaml.Views;
+using TrufflePig.Services;
+using TrufflePig.ViewModels;
+using TrufflePig.Xaml.Views;
 
-namespace WebViewer;
+namespace TrufflePig;
 
 public partial class App : Application, IAppExtended
 {

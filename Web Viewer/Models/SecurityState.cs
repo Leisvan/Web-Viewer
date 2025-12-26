@@ -1,4 +1,4 @@
-﻿namespace WebViewer.Models;
+﻿namespace TrufflePig.Models;
 
 public enum SecurityState
 {

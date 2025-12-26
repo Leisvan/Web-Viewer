@@ -6,7 +6,7 @@ using System;
 using System.IO;
 using Windows.UI.ViewManagement;
 
-namespace WebViewer;
+namespace TrufflePig;
 
 public sealed partial class MainWindow : Window
 {

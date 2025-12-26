@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebViewer.Models;
+namespace TrufflePig.Models;
 
 public class NavigationRecord(string url, string favIconUri, string title, DateTime lastVisited, int visitCount)
 {

@@ -1,15 +1,10 @@
-﻿using LCTWorks.Core.Helpers;
-using LCTWorks.WinUI.Helpers;
+﻿using LCTWorks.WinUI.Helpers;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
-using WebViewer.Models;
-using Windows.Storage;
+using TrufflePig.Models;
 
-namespace WebViewer.Services;
+namespace TrufflePig.Services;
 
 public class NavigationHistoryService
 {

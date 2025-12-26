@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using LCTWorks.WinUI.Navigation;
 
-namespace WebViewer.ViewModels;
+namespace TrufflePig.ViewModels;
 
 public partial class ShellViewModel : ObservableObject
 {

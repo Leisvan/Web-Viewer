@@ -3,7 +3,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0-windows10.0.22621.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
-    <RootNamespace>WebViewer</RootNamespace>
+    <RootNamespace>TrufflePig</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x86;x64;ARM64</Platforms>
 	  <LangVersion>preview</LangVersion>
@@ -70,7 +70,7 @@
     </Page>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <WebView2DispatchAdapterNamespace>WebViewer</WebView2DispatchAdapterNamespace>
+    <WebView2DispatchAdapterNamespace>TrufflePig</WebView2DispatchAdapterNamespace>
   </PropertyGroup>
 
   <!--

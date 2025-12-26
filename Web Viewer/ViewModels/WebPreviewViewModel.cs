@@ -7,10 +7,10 @@ using Microsoft.Web.WebView2.Core;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using WebViewer.Models;
-using WebViewer.Services;
+using TrufflePig.Models;
+using TrufflePig.Services;
 
-namespace WebViewer.ViewModels;
+namespace TrufflePig.ViewModels;
 
 public partial class WebPreviewViewModel(NavigationHistoryService navigationHistoryService) : ObservableObject
 {
@@ -113,7 +113,7 @@ public partial class WebPreviewViewModel(NavigationHistoryService navigationHist
         UriSource = new Uri($"https://www.google.com/search?q={searchQuery}");
     }
 
-    public void UriTextBoxSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+    public void UriTextBoxSuggestionChosen(AutoSuggestBox _, AutoSuggestBoxSuggestionChosenEventArgs args)
     {
         if (args.SelectedItem is NavigationRecord item)
         {
@@ -219,6 +219,16 @@ public partial class WebPreviewViewModel(NavigationHistoryService navigationHist
         {
             _pendingNavigationUrl = null;
             _webView.CoreWebView2.GoForward();
+        }
+    }
+
+    [RelayCommand]
+    private void Refresh()
+    {
+        if (_webView?.CoreWebView2 != null)
+        {
+            _pendingNavigationUrl = null;
+            _webView.CoreWebView2.Reload();
         }
     }
 

@@ -1,4 +1,4 @@
-﻿namespace WebViewer.Helpers;
+﻿namespace TrufflePig.Helpers;
 
 public static class AppHelper
 {

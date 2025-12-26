@@ -1,9 +1,9 @@
 using LCTWorks.WinUI.Extensions;
 using LCTWorks.WinUI.Helpers;
 using Microsoft.UI.Xaml.Controls;
-using WebViewer.ViewModels;
+using TrufflePig.ViewModels;
 
-namespace WebViewer.Xaml.Views;
+namespace TrufflePig.Xaml.Views;
 
 public sealed partial class ShellPage : Page
 {
