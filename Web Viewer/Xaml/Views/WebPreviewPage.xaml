@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:models="using:WebViewer.Models"
       xmlns:xaml="using:WebViewer.Xaml"
       mc:Ignorable="d">
     <Page.Resources>
@@ -56,13 +57,43 @@
                                 BorderThickness="0"
                                 CornerRadius="16"
                                 IsEnabled="{x:Bind ViewModel.IsNavigationEnabled, Mode=OneWay}"
+                                ItemsSource="{x:Bind ViewModel.SuggestedRecords, Mode=OneWay}"
                                 QueryIcon="Forward"
                                 QuerySubmitted="{x:Bind ViewModel.UriTextBoxQuerySubmitted}"
-                                Text="{x:Bind ViewModel.UriText, Mode=TwoWay}">
+                                SuggestionChosen="{x:Bind ViewModel.UriTextBoxSuggestionChosen}"
+                                Text="{x:Bind ViewModel.UriText, Mode=TwoWay}"
+                                TextChanged="{x:Bind ViewModel.UriTextBoxTextChanged}">
                     <AutoSuggestBox.Resources>
                         <Thickness x:Key="TextControlBorderThemeThicknessFocused">0</Thickness>
                         <Thickness x:Key="TextControlThemePadding">72,5,24,5</Thickness>
                     </AutoSuggestBox.Resources>
+                    <AutoSuggestBox.ItemTemplate>
+                        <DataTemplate x:DataType="models:NavigationRecord">
+                            <Grid ColumnSpacing="12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.Column="0"
+                                       Width="16"
+                                       Height="16"
+                                       Source="{x:Bind FavIconUri}" />
+                                <StackPanel Grid.Column="1"
+                                            Orientation="Horizontal"
+                                            Spacing="8">
+                                    <TextBlock VerticalAlignment="Center"
+                                               FontWeight="SemiBold"
+                                               Text="{x:Bind Title}"
+                                               TextTrimming="CharacterEllipsis" />
+                                    <TextBlock VerticalAlignment="Center"
+                                               FontSize="12"
+                                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                               Text="{x:Bind Url}"
+                                               TextTrimming="CharacterEllipsis" />
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </AutoSuggestBox.ItemTemplate>
                 </AutoSuggestBox>
                 <FontIcon Margin="12,0"
                           HorizontalAlignment="Left"

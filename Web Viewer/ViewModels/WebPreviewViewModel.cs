@@ -5,13 +5,18 @@ using LCTWorks.WinUI.Extensions;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using WebViewer.Models;
+using WebViewer.Services;
 
 namespace WebViewer.ViewModels;
 
-public partial class WebPreviewViewModel : ObservableObject
+public partial class WebPreviewViewModel(NavigationHistoryService navigationHistoryService) : ObservableObject
 {
     private const string DefaultFavIconUri = "ms-appx:///Assets/Images/DefaultSiteIcon.png";
+    private readonly NavigationHistoryService _navigationHistoryService = navigationHistoryService;
+    private string? _pendingNavigationUrl;
     private WebView2? _webView;
 
     [ObservableProperty]
@@ -52,6 +57,8 @@ public partial class WebPreviewViewModel : ObservableObject
     [ObservableProperty]
     public partial SecurityState SecurityState { get; set; } = SecurityState.Unknown;
 
+    public ObservableCollection<NavigationRecord> SuggestedRecords { get; } = [];
+
     [ObservableProperty]
     public partial Uri UriSource { get; set; }
 
@@ -76,7 +83,7 @@ public partial class WebPreviewViewModel : ObservableObject
         }
     }
 
-    public void UriTextBoxQuerySubmitted(AutoSuggestBox _, AutoSuggestBoxQuerySubmittedEventArgs __)
+    public void UriTextBoxQuerySubmitted(AutoSuggestBox _, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
         if (string.IsNullOrWhiteSpace(UriText))
         {
@@ -85,16 +92,65 @@ public partial class WebPreviewViewModel : ObservableObject
 
         var input = UriText.Trim();
 
+        if (args.ChosenSuggestion is NavigationRecord chosenItem)
+        {
+            _pendingNavigationUrl = chosenItem.Url;
+            UriSource = new Uri(chosenItem.Url);
+            return;
+        }
+
         var uri = input.BuildValidUri();
         if (uri != null)
         {
+            _pendingNavigationUrl = uri.ToString();
             UriSource = uri;
             return;
         }
 
         // Fallback to Google search
         var searchQuery = Uri.EscapeDataString(input);
+        _pendingNavigationUrl = null;
         UriSource = new Uri($"https://www.google.com/search?q={searchQuery}");
+    }
+
+    public void UriTextBoxSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+    {
+        if (args.SelectedItem is NavigationRecord item)
+        {
+            UriText = item.Url;
+        }
+    }
+
+    public void UriTextBoxTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+    {
+        if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+        {
+            var suggestions = _navigationHistoryService.Search(sender.Text);
+            // Check if suggestions have changed before updating
+            if (!AreSuggestionsEqual(SuggestedRecords, suggestions))
+            {
+                SuggestedRecords.Clear();
+                SuggestedRecords.AddRange(suggestions);
+            }
+        }
+    }
+
+    private static bool AreSuggestionsEqual(ObservableCollection<NavigationRecord> current, List<NavigationRecord> newSuggestions)
+    {
+        if (current.Count != newSuggestions.Count)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < current.Count; i++)
+        {
+            if (current[i].Url != newSuggestions[i].Url)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private void CoreWebView2_HistoryChanged(CoreWebView2 sender, object args)
@@ -124,6 +180,13 @@ public partial class WebPreviewViewModel : ObservableObject
         }
         UpdateNavigationState();
         UpdateSecurityState(args);
+        if (_pendingNavigationUrl != null && args.IsSuccess)
+        {
+            var title = sender.DocumentTitle ?? string.Empty;
+            var favIconUri = FavIconUri != DefaultFavIconUri ? FavIconUri : string.Empty;
+            _navigationHistoryService.AddOrUpdateItem(_pendingNavigationUrl, favIconUri, title);
+            _pendingNavigationUrl = null;
+        }
     }
 
     private void CoreWebView2_NavigationStarting(CoreWebView2 sender, CoreWebView2NavigationStartingEventArgs args)
@@ -144,6 +207,7 @@ public partial class WebPreviewViewModel : ObservableObject
     {
         if (_webView?.CoreWebView2 != null && _webView.CoreWebView2.CanGoBack)
         {
+            _pendingNavigationUrl = null;
             _webView.CoreWebView2.GoBack();
         }
     }
@@ -153,6 +217,7 @@ public partial class WebPreviewViewModel : ObservableObject
     {
         if (_webView?.CoreWebView2 != null && _webView.CoreWebView2.CanGoForward)
         {
+            _pendingNavigationUrl = null;
             _webView.CoreWebView2.GoForward();
         }
     }

@@ -9,6 +9,7 @@ using Microsoft.UI.Xaml;
 using System;
 using System.Security;
 using System.Threading.Tasks;
+using WebViewer.Services;
 using WebViewer.ViewModels;
 using WebViewer.Xaml.Views;
 
@@ -34,6 +35,7 @@ public partial class App : Application, IAppExtended
 
            // Services
            .AddSingleton<FrameNavigationService>()
+           .AddSingleton<NavigationHistoryService>()
            .AddSentry(string.Empty, RuntimePackageHelper.Environment, RuntimePackageHelper.IsDebug(), RuntimePackageHelper.GetTelemetryContextData())
 
            //ViewModels
