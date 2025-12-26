@@ -13,6 +13,7 @@
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
+    <Project Path="submodules/LCTWorks-Toolkit/LCTWorks.Web/LCTWorks.Web.csproj" />
     <Project Path="submodules/LCTWorks-Toolkit/LCTWorks.WinUI/LCTWorks.WinUI.csproj">
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />

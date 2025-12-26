@@ -56,6 +56,7 @@
   <ItemGroup>
     <ProjectReference Include="..\submodules\LCTWorks-Toolkit\LCTWorks.Core\LCTWorks.Core.csproj" />
     <ProjectReference Include="..\submodules\LCTWorks-Toolkit\LCTWorks.Telemetry\LCTWorks.Telemetry.csproj" />
+    <ProjectReference Include="..\submodules\LCTWorks-Toolkit\LCTWorks.Web\LCTWorks.Web.csproj" />
     <ProjectReference Include="..\submodules\LCTWorks-Toolkit\LCTWorks.WinUI\LCTWorks.WinUI.csproj" />
   </ItemGroup>
   <ItemGroup>
