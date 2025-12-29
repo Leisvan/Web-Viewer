@@ -1,6 +1,7 @@
 ﻿<Page x:Class="TrufflePig.Xaml.Views.WebPreviewPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ctc="using:CommunityToolkit.WinUI.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:icon="using:FluentIcons.WinUI"
       xmlns:iconx="using:FluentIcons.WinUI.Markup"
@@ -77,6 +78,16 @@
                         Visibility="{x:Bind ViewModel.CanGoForward, Mode=OneWay}" />
                 <Button Command="{x:Bind ViewModel.RefreshCommand}"
                         Content="{iconx:SymbolIcon Symbol=ArrowClockwise}" />
+                <StackPanel Orientation="Horizontal"
+                            Spacing="4"
+                            Visibility="{x:Bind ViewModel.IsPlayingAudio, Mode=OneWay}">
+                    <Button Command="{x:Bind ViewModel.ToggleMuteCommand, Mode=OneWay}"
+                            Content="{iconx:SymbolIcon Symbol=Speaker2}"
+                            Visibility="{x:Bind ViewModel.IsNotMuted, Mode=OneWay}" />
+                    <Button Command="{x:Bind ViewModel.ToggleMuteCommand, Mode=OneWay}"
+                            Content="{iconx:SymbolIcon Symbol=SpeakerOff}"
+                            Visibility="{x:Bind ViewModel.IsMuted, Mode=OneWay}" />
+                </StackPanel>
             </StackPanel>
 
             <Grid Grid.Column="1">
@@ -145,16 +156,7 @@
                         Margin="8,0"
                         Orientation="Horizontal"
                         Spacing="4">
-                <StackPanel Orientation="Horizontal"
-                            Spacing="4"
-                            Visibility="{x:Bind ViewModel.IsPlayingAudio, Mode=OneWay}">
-                    <Button Command="{x:Bind ViewModel.ToggleMuteCommand, Mode=OneWay}"
-                            Content="{iconx:SymbolIcon Symbol=Speaker2}"
-                            Visibility="{x:Bind ViewModel.IsNotMuted, Mode=OneWay}" />
-                    <Button Command="{x:Bind ViewModel.ToggleMuteCommand, Mode=OneWay}"
-                            Content="{iconx:SymbolIcon Symbol=SpeakerOff}"
-                            Visibility="{x:Bind ViewModel.IsMuted, Mode=OneWay}" />
-                </StackPanel>
+
                 <Button x:Uid="BrowserCommand-OpenInExternalBrowserButton"
                         Command="{x:Bind ViewModel.OpenInExternalBrowserCommand, Mode=OneWay}">
                     <FontIcon FontFamily="{StaticResource FontAwesomeBrandsFontFamily}"
@@ -163,9 +165,9 @@
                 <Button x:Uid="BrowserCommand-OpenDevToolsWindowButton"
                         Command="{x:Bind ViewModel.OpenWebViewDevToolsWindowCommand, Mode=OneWay}"
                         Content="{iconx:SymbolIcon Symbol=WindowDevTools}" />
-                <Button Content="{iconx:SymbolIcon Symbol=SearchSparkle,
-                                                   IconVariant=Color}"
-                        IsEnabled="False" />
+                <Button Command="{x:Bind ViewModel.ToggleVisualizerCommand, Mode=OneWay}"
+                        Content="{iconx:SymbolIcon Symbol=SearchSparkle,
+                                                   IconVariant=Color}" />
                 <Button Content="{iconx:SymbolIcon Symbol=Settings}"
                         IsEnabled="False" />
             </StackPanel>
@@ -174,6 +176,12 @@
               Margin="8"
               HorizontalAlignment="Stretch"
               VerticalAlignment="Stretch">
+            <Border x:Name="PopupDimensionsReference"
+                    Margin="12,8"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="Transparent"
+                    SizeChanged="PopupDimensionsReference_SizeChanged" />
             <WebView2 x:Name="WebView"
                       Source="{x:Bind ViewModel.UriSource, Mode=TwoWay}" />
             <ProgressBar x:Name="LoadingBar"
@@ -181,6 +189,30 @@
                          VerticalAlignment="Top"
                          x:Load="{x:Bind ViewModel.IsNavigating, Mode=OneWay}"
                          IsIndeterminate="True" />
+            <Popup x:Name="VisualizerPopup"
+                   HorizontalOffset="16"
+                   IsOpen="{x:Bind ViewModel.IsVisualizerOpened, Mode=OneWay}"
+                   Opened="VisualizerPopup_Opened"
+                   VerticalOffset="16">
+                <Border x:Name="VisualizerPopupContent"
+                        Width="200"
+                        Height="160"
+                        Padding="20"
+                        Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="{StaticResource OverlayCornerRadius}">
+                    <StackPanel HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Spacing="8">
+                        <TextBlock HorizontalAlignment="Center"
+                                   FontSize="16"
+                                   Text="Simple Popup" />
+                        <Button Command="{x:Bind ViewModel.ToggleVisualizerCommand, Mode=OneWay}"
+                                Content="Close" />
+                    </StackPanel>
+                </Border>
+            </Popup>
         </Grid>
     </Grid>
 </Page>

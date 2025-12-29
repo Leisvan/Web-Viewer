@@ -58,6 +58,9 @@ public partial class WebPreviewViewModel(NavigationHistoryService navigationHist
     public partial bool IsPlayingAudio { get; set; }
 
     [ObservableProperty]
+    public partial bool IsVisualizerOpened { get; set; }
+
+    [ObservableProperty]
     public partial SecurityState SecurityState { get; set; } = SecurityState.Unknown;
 
     public ObservableCollection<NavigationRecord> SuggestedRecords { get; } = [];
@@ -255,6 +258,12 @@ public partial class WebPreviewViewModel(NavigationHistoryService navigationHist
 
     [RelayCommand]
     private void ToggleMute() => IsMuted = !IsMuted;
+
+    [RelayCommand]
+    private void ToggleVisualizer()
+    {
+        IsVisualizerOpened = !IsVisualizerOpened;
+    }
 
     private void UpdateNavigationState()
     {
